@@ -1,0 +1,89 @@
+.card-animate {
+    position        : relative;
+    background-color: #FFF;
+    border-radius   : 6px;
+    height          : 100%;
+    overflow        : hidden;
+    width           : 100%;
+    margin          : 0 auto;
+
+}
+
+.shimmerBG {
+    animation-duration       : 2.2s;
+    animation-fill-mode      : forwards;
+    animation-iteration-count: infinite;
+    animation-name           : shimmer;
+    animation-timing-function: linear;
+    background               : #ddd;
+    background               : linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+    background-size          : 1200px 100%;
+}
+
+
+@-webkit-keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+
+    100% {
+        background-position: 1200px 0;
+    }
+}
+
+.media {
+    height: 150px;
+}
+
+.p-32 {
+    padding: 32px;
+}
+
+.title-line {
+    height       : 24px;
+    width        : 100%;
+    margin-bottom: 12px;
+    border-radius: 20px;
+}
+
+.content-line {
+    height       : 8px;
+    width        : 100%;
+    margin-bottom: 16px;
+    border-radius: 8px;
+}
+
+.end {
+    width: 40%;
+}
+
+.m-t-24 {
+    margin-top: 24px;
+}
+
+.notificacion {
+    background-color: rgba(238, 238, 238, 0.658);
+    backdrop-filter : blur(5px);
+    position        : absolute;
+    top             : -100%;
+    right           : 10px;
+    z-index         : 100;
+}
+
+#number-alerta{
+    font-family: Helvetica, sans-serif;
+}
+
+#alerta-link{
+    font-size: 20px;
+}

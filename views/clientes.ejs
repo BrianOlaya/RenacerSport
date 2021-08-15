@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Import bootstrap dependencies-->
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" />
+  <script src="/vendor/bootstrap/jquery-3.5.1.min.js"></script>
+  <script src="/vendor/bootstrap/popper.min.js"></script>
+  <script src="/vendor/bootstrap/bootstrap.min.js"></script>
+
+  <script>
+    var _tooltip = jQuery.fn.tooltip;
+  </script>
+  <!-- <script src="/vendor/bootstrap/jquery-ui.min.js"></script>-->
+  <script>
+    jQuery.fn.tooltip = _tooltip;
+  </script>
+
+  <!-- Import bootstrap dependencies-->
+
+  <!-- <link rel="stylesheet" href="/stylesheets/fontwasome.all.css" /> -->
+
+  <script src="/vendor/sweetalert/sweetalert2.js"></script>
+  <link rel="stylesheet" href="/vendor/sweetalert/sweetalert2.css" />
+
+  <!-- Import full calendar local dependencies-->
+  <script src="/vendor/full-calendar/moment.min.js"></script>
+  <!--<link rel="stylesheet" href="/vendor/full-calendar/main.css" />-->
+  <!--<link rel="stylesheet" href="/vendor/full-calendar/daygrid_main.css"/>-->
+  <!--<link rel="stylesheet" href="/vendor/full-calendar/timegrid_main.css"/>-->
+
+  <!-- Import chart.js  dependencies-->
+  <script src="/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Import datatables local dependencies-->
+  <link rel="stylesheet" type="text/css" href="/vendor/data-tables/datatables.min.css" />
+  <!--<script type="text/javascript" src="/vendor/data-tables/pdfmake.min.js"></script> -->
+  <!--<script type="text/javascript" src="/vendor/data-tables/vfs_fonts.js"></script> -->
+  <script type="text/javascript" src="/vendor/data-tables/datatables.min.js"></script>
+  <script type="text/javascript" src="/vendor/data-tables/datetime-moment.js"></script>
+
+  <link rel="stylesheet" href="/vendor/data-tables/searchBuilder.bootstrap4.min.css" />
+  <script src="/vendor/data-tables/dataTables.searchBuilder.min.js"></script>
+
+  <!-- Import flatpicker calendar local dependencies-->
+  <link rel="stylesheet" href="/vendor/flat-picker/flatpickr.min.css" />
+  <link rel="stylesheet" href="/vendor/flat-picker/airbnb.css" />
+  <script src="/vendor/flat-picker/flatpickr.js"></script>
+  <script src="/vendor/flat-picker/es.js"></script>
+
+ 
+
+
+    <title>Base Clientes</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+      <div class="container">
+        <a class="navbar-brand" href="/inicio">
+        <img src="images/logo.png" width="60" height="60" alt="" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/inventario">Inventario</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/venta">Nueva Venta</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/producto">Ingreso Producto</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Históricos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/historico_ventas">Ventas</a>
+                  <a class="dropdown-item" href="/cliente">Base clientes</a>               
+                </div>
+              </li>
+              <li class="nav-item">
+                <p class="nav-link mr-3"><strong> Usuario :  <%= usuario %> </strong> </p>
+            </li>
+              <li class="nav-item">
+                <button type="button" class="btn btn-outline-info btn-sm mt-1 " id="logout">Cerrar Sesión</button>
+              </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+    <div class="table-responsive container border shadow-sm mt-5 p-3">
+      <div class="d-flex justify-content-between mt-4">
+      <h1 class="font-weight-light">Base de clientes</h1>
+      <div class="text-right ml-3 my-3">
+        <button type="submit" class="btn btn-outline-primary " id="hide-filter">
+        <strong>Mostrar Filtros</strong> 
+            </button>
+        </div>
+      </div>
+      <table id="table-producto" class="table-data table table-hover table-bordered bg-white text-center"></table> 
+    </div>
+    
+    <nav class="navbar navbar-light bg-dark mt-5">
+      <a class="navbar-brand" href="#">
+        <img src="images/logo.png" width="60" height="60" alt="" />
+      </a>
+    </nav>
+  </body>
+  <script>
+
+
+
+function CreateTableProducto() {
+    var base_url = window.location.origin;
+    if ($.fn.dataTable.isDataTable("#table-producto")) {
+      table = $("#table-producto").DataTable();
+      table.destroy();
+    }
+    var table = $("#table-producto").DataTable({
+      ajax: {
+        url: base_url + "/cliente/clientes",
+        dataSrc: "",
+      }, 
+      columns: [
+        { data: "numero_documento", title: "Documento", width: "80px", searchPanes: { show: false }  },
+        { data: "tipo_documento", title: "Tipo", width: "100px", searchPanes: { show: true }  },    
+        { data: "nombre", title: "Nombre", width: "150px", searchPanes: { show: false }  },
+        { data: "telefono", title: "Teléfono", width: "80px", searchPanes: { show: false },},
+        { data: "direccion", title: "Dirección", width: "300px", searchPanes: { show: false }  },
+        { data: "sector", title: "Barrio", width: "120px", searchPanes: { show: true }  },
+      ],
+      language: {
+        url: "/vendor/data-tables/Spanish.json",
+      },
+      select: false,
+      scrollX: true,
+      responsive: false,
+      pageLength: 5,
+      dom: "PlfrtiBp",
+      "order": [[ 0, 'desc' ]],
+      
+    });
+  }
+
+
+CreateTableProducto()
+
+ $(document).ready(function (){
+
+  var table = $("#table-venta").DataTable()
+  setTimeout(function () {
+        $(".dtsp-container").addClass("d-none");
+        $(".buttons-copy").addClass("d-none");
+        $(".buttons-csv").addClass("d-none");
+    }, 200);
+
+})
+
+
+  $("#hide-filter").click(function () {
+
+ $(".dtsp-container").toggleClass("d-none");   
+
+ $("#hide-filter").toggleClass('active')
+
+ if ($("#hide-filter strong").text() == 'Ocultar Filtros') {
+    $("#hide-filter").html('<strong>Mostrar Filtros</strong>&nbsp;&nbsp;<i class="fas fa-filter"></i>')
+ } else {
+    $("#hide-filter").html('<strong>Ocultar Filtros</strong>&nbsp;&nbsp;<i class="fas fa-filter"></i>')
+ }
+
+ });
+
+
+function GuardarNuevoProducto() {
+
+let data =
+{
+    codigo: $("#codigo_producto").val(),
+    descripcion: $("#descripcion_producto").val(),
+    cantidad:0,
+    costo: $("#costo_producto").val(),
+    precio_venta: $("#precio_venta_producto").val(),
+
+}
+
+
+if( $("#codigo_producto").val() == ''|| $("#descripcion_producto").val() == ''|| $("#costo_producto").val() == ''|| $("#precio_venta_producto").val() == '' ) {
+        Swal.fire(
+            'Información',
+            'Todos los campos son obligatorios.',
+            'warning'
+        )
+       } else {
+        $.ajax({
+            method: "POST",
+            url: "/producto",
+            data: data
+
+        }).done(function (result) {    
+
+                     Swal.fire(
+                    'Información',
+                    '¡Datos guardados exitosamente!',
+                    'success'
+                )  
+                CreateTableProducto()          
+
+        })
+      }
+}
+
+function limpiarStorage() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    $("#logout").on("click", function () {
+      limpiarStorage();
+      $.ajax({
+        method: "POST",
+        url: "auth/logout",
+      }).done(function (result) {
+        setTimeout(() => {
+          location.reload();
+        }, 200);
+      });
+    });
+
+    </script>
+</html>

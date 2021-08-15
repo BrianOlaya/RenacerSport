@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../public/images/favicon.png" />
+
+    <!-- Import bootstrap dependencies-->
+    <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" />
+    <script src="/vendor/bootstrap/jquery-3.5.1.min.js"></script>
+    <script src="/vendor/bootstrap/popper.min.js"></script>
+    <script src="/vendor/bootstrap/bootstrap.min.js"></script>
+
+    <script>
+      var _tooltip = jQuery.fn.tooltip;
+    </script>
+    <!-- <script src="/vendor/bootstrap/jquery-ui.min.js"></script>-->
+    <script>
+      jQuery.fn.tooltip = _tooltip;
+    </script>
+
+    <!-- Import bootstrap dependencies-->
+
+    <!-- <link rel="stylesheet" href="/stylesheets/fontwasome.all.css" /> -->
+
+    <script src="/vendor/sweetalert/sweetalert2.js"></script>
+    <link rel="stylesheet" href="/vendor/sweetalert/sweetalert2.css" />
+
+    <!-- Import full calendar local dependencies-->
+    <script src="/vendor/full-calendar/moment.min.js"></script>
+    <!--<link rel="stylesheet" href="/vendor/full-calendar/main.css" />-->
+    <!--<link rel="stylesheet" href="/vendor/full-calendar/daygrid_main.css"/>-->
+    <!--<link rel="stylesheet" href="/vendor/full-calendar/timegrid_main.css"/>-->
+
+    <!-- Import chart.js  dependencies-->
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Import datatables local dependencies-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/data-tables/datatables.min.css"
+    />
+    <!--<script type="text/javascript" src="/vendor/data-tables/pdfmake.min.js"></script> -->
+    <!--<script type="text/javascript" src="/vendor/data-tables/vfs_fonts.js"></script> -->
+    <script
+      type="text/javascript"
+      src="/vendor/data-tables/datatables.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/vendor/data-tables/datetime-moment.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="/vendor/data-tables/searchBuilder.bootstrap4.min.css"
+    />
+    <script src="/vendor/data-tables/dataTables.searchBuilder.min.js"></script>
+
+    <!-- Import flatpicker calendar local dependencies-->
+    <link rel="stylesheet" href="/vendor/flat-picker/flatpickr.min.css" />
+    <link rel="stylesheet" href="/vendor/flat-picker/airbnb.css" />
+    <script src="/vendor/flat-picker/flatpickr.js"></script>
+    <script src="/vendor/flat-picker/es.js"></script>
+
+    <title>Nueva Venta</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+      <div class="container">
+        <a class="navbar-brand" href="/inicio">
+          <img src="images/logo.png" width="60" height="60" alt="" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/inventario">Inventario</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/venta">Nueva Venta</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/producto">Ingreso Producto</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Históricos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/historico_ventas">Ventas</a>
+                <a class="dropdown-item" href="/cliente">Base clientes</a> 
+              </div>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link mr-3"><strong> Usuario :  <%= usuario %> </strong> </p>
+          </li>
+            <li class="nav-item">
+              <button type="button" class="btn btn-outline-info btn-sm mt-1 " id="logout">Cerrar Sesión</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-3 p-3 bg-light border shadow-sm p-3">
+      <form>
+        <div>
+          <h1 class="font-weight-light ml-3">Nueva Venta</h1>
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class="">
+                <label for="cliente">Cliente</label>
+                <select
+                  class="form-control"
+                  onchange="ConsultaCliente()"
+                  id="cliente"                >
+                  <option selected>Seleccione</option>    
+                </select>
+              </div>
+              <button
+                type="button"
+                class="btn btn-primary mt-2"
+                id="clienteNuevo"
+              >
+                <strong>Cliente Nuevo +</strong>
+              </button>
+            </div>
+            <div class="form-group d-none">
+              <label for="codigo_producto">id Producto</label>
+              <input type="text" class="form-control" id="id_producto" />
+            </div>
+
+            <div class="form-group d-none">
+              <label for="codigo_producto">Codigo Producto</label>
+              <input type="text" class="form-control" id="codigo_producto" />
+            </div>
+            <div class="form-group">
+              <label for="descripcion_producto">Descripción</label>
+              <select
+                class="form-control"
+                onchange="ConsultaProducto()"
+                id="descripcion_producto"
+              >
+                <option selected>Seleccione</option>
+              </select>
+            </div>
+            <div class="form-group d-none">
+              <label for="costo_producto">Costo Producto</label>
+              <input type="text" class="form-control" id="costo_producto" />
+            </div>
+            <div class="form-group">
+              <label for="precio_venta">Precio Venta</label>
+              <input type="text" class="form-control" id="precio_venta" />
+            </div>
+            <div class="form-group">
+              <label for="cantidad_producto">Cantidad</label>
+              <input
+                type="number"
+                class="form-control"
+                id="cantidad_producto"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="justify-content-center">
+      <div class="d-flex justify-content-around m-2"> 
+      <button class="btn btn-primary btn-sm" id="btn_registrar_producto">
+        <strong>Registrar producto </strong>
+      </button>
+
+      <button class="btn btn-warning btn-sm" id="btn_reset_factura">
+        <strong>Limpiar productos </strong>
+      </button>
+    </div>
+      <div class="d-flex justify-content-around m-2">
+      <button class="btn btn-outline-secondary btn-sm   " id="btn_descuento_25">
+        <strong>Descuento 25%</strong>
+      </button>
+      <button class="btn btn-outline-secondary btn-sm " id="btn_descuento_15">
+        <strong>Descuento 15%</strong>
+      </button>
+    </div>
+  </div>
+    </div>
+
+    <div class="table-responsive container border shadow-sm p-5">
+      <div class="text-right">
+        <h3 class="font-weight-light" id="nro_factura">Factura N° <span id="nro_venta"></span> </h3>
+        <h3 class="font-weight-light" id="fecha_factura"></h3>
+      </div>
+      <div class="d-flex">
+        <div class="d-flex justify-content-between mx-2 align-items-center">
+          <h5 class="font-weight-light"><strong>Cliente:</strong></h5>
+          <h6 class="font-weight-light mx-2" ></h6>
+            <strong id="nombre_cliente_factura"></strong>
+          </h6>
+        </div>
+        <div class="d-flex justify-content-between mx-2 align-items-center">
+          <h5 class="font-weight-light"><strong >N° Documento:</strong></h5>
+          <h6 class="font-weight-light mx-2"><strong id="documento_cliente_factura"></strong></h6>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div
+          class="d-flex justify-content-between my-2 mx-2 align-items-center"
+        >
+          <h5 class="font-weight-light"><strong>Teléfono:</strong></h5>
+          <h6 class="font-weight-light mx-2"><strong id="telefono_cliente_factura"></strong></h6>
+        </div>
+        <div
+          class="d-flex justify-content-between my-2 mx-2 align-items-center"
+        >
+          <h5 class="font-weight-light"><strong>Dirección:</strong></h5>
+          <h6 class="font-weight-light mx-2">
+            <strong id="direccion_cliente_factura"></strong>
+          </h6>
+        </div>
+      </div>
+
+      <table class="table text-center" id="table-venta">
+        <tfoot>
+          <tr id="suma">
+              <td class="font-weight-bold bg-light" id=""></td>
+              <td class="font-weight-bold bg-light" id=""></td>
+              <td class="font-weight-bold bg-light" id=""></td>
+              <td class="font-weight-bold bg-light" id="cantidades"></td>
+              <td class="font-weight-bold bg-light" id="total"></td>
+              <td class="font-weight-bold bg-light" id="utilidad"></td>
+          </tr>
+      </tfoot>
+
+      </table>
+
+      <button class="btn btn-primary mt-5" id="btn_facturar">
+        <strong>Registrar Venta</strong>
+      </button>
+    </div>
+
+    <nav class="navbar navbar-light bg-dark mt-5">
+      <a class="navbar-brand" href="#">
+        <img src="images/logo.png" width="60" height="60" alt="" />
+      </a>
+    </nav>
+
+    <!-- Modal Cliente Nuevo -->
+
+    <div
+      class="modal fade"
+      id="ModalClienteNuevo"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby=""
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered mw-90 h-70"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header text-white bg-primary">
+            <h5 class="modal-title">
+              <i class="far fa-clipboard"></i> &nbsp;&nbsp; Cliente Nuevo
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12 mb-2">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="inputAddress">Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nombre_cliente"
+                          placeholder="Nombres y Apellidos"
+                        />
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="tipo_doc">Tipo Documento</label>
+                          <select class="form-control" id="tipo_doc_cliente">
+                            <option selected>Seleccione</option>
+                            <option>Cédula de Ciudadanía</option>
+                            <option>NIT</option>
+                            <option>Cédula de extranjería</option>
+                            <option>Pasaporte</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="numero_doc_cliente">N° Documento</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="numero_doc_cliente"
+                            placeholder="# Documento"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="telefono_cliente">Teléfono</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="telefono_cliente"
+                            placeholder="# Teléfono"
+                          />
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="barrio_cliente">Barrio</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="barrio_cliente"
+                            placeholder="B/"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="direccion_cliente">Dirección</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="direccion_cliente"
+                          placeholder="Dirección del cliente"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick="crearCliente()"
+                        class="btn btn-primary"
+                      >
+                        Crear Cliente
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    $("#clienteNuevo").click(function () {
+      $("#ModalClienteNuevo").modal();
+    });
+
+    function consultaProductos() {
+      $.ajax({
+        method: "GET",
+        url: "/producto/productos",
+      }).done(function (result) {
+        result.map((producto) => {
+          let row = `<option>${producto.descripcion}</option>`;
+          $("#descripcion_producto").append(row);
+        });
+      });
+    }
+    
+    function ConsultaClientes() {
+        $.ajax({
+        method: "GET",
+        url: "/cliente/clientes",
+      }).done(function (result) {
+        result.map((cliente) => {
+          let row = `<option>${cliente.nombre}</option>`;
+          $("#cliente").append(row);
+        });
+      });
+    }
+
+    function ConsultaNroVenta() {
+        $.ajax({
+        method: "GET",
+        url: "/historico_ventas/nro_venta",
+      }).done(function (result) {
+       // console.log(result.pop());
+      //  console.log(result.pop().numero_venta);
+           let nro_venta =result.pop().numero_venta+1;
+          $("#nro_venta").append(nro_venta);
+          localStorage.setItem( "NroVenta", JSON.stringify(nro_venta));
+      });
+    }
+
+
+    function crearCliente() {
+      let data = {
+        nombre: $('#nombre_cliente').val(),
+        tipo_documento: $('#tipo_doc_cliente').val(),
+        numero_documento: $('#numero_doc_cliente').val(),
+        telefono: $('#telefono_cliente').val(),
+        sector: $('#barrio_cliente').val(),
+        direccion: $('#direccion_cliente').val(),
+      };
+      $.ajax({
+        method: "POST",
+        url: "/cliente",
+        data: data,
+      }).done(function (result) {
+        Swal.fire(
+          "Información",
+          "Venta registrada satisfactoriamente",
+          "success"
+        );
+      });
+    }
+
+
+
+    function ConsultaCliente() {
+      let nombre = $("#cliente").val();
+      $.ajax({
+        method: "GET",
+        url: "/cliente/" + nombre,
+      }).done(function (result) {
+        $('#documento_cliente_factura').text(result[0].numero_documento)
+        $('#nombre_cliente_factura').text(result[0].nombre)
+        $('#fecha_factura').text(moment().format('l'))
+        $('#telefono_cliente_factura').text(result[0].telefono)
+        $('#direccion_cliente_factura').text(result[0].direccion)
+
+
+        localStorage.setItem( "Documento", JSON.stringify(result[0].numero_documento));
+        localStorage.setItem( "Cliente", JSON.stringify(result[0].nombre));
+        localStorage.setItem( "Fecha", JSON.stringify(moment().format('l')));
+        localStorage.setItem( "Telefono", JSON.stringify(result[0].telefono));
+        localStorage.setItem( "Direccion", JSON.stringify(result[0].direccion));
+    
+      });
+
+
+
+    }
+
+    function ConsultaProducto() {
+      let descripcion = $("#descripcion_producto").val();
+      $.ajax({
+        method: "GET",
+        url: "/producto/" + descripcion,
+      }).done(function (result) {        
+        $("#costo_producto").val(result[0].costo);
+        $("#precio_venta").val(result[0].precio_venta);
+        $("#codigo_producto").val(result[0].codigo);
+        $("#id_producto").val(result[0]._id);
+      });
+    }
+
+    function restarInventario() {
+      let productos_facturados = JSON.parse(localStorage.getItem("Productos"));
+        productos_facturados.map((producto) => {
+        let id = producto.id_producto;
+        let data = {
+          cantidad: producto.cantidad,
+        };
+        $.ajax({
+          method: "PUT",
+          url: "/producto/productos_restar_cantidad/" + id,
+          data: data,
+        }).done(function (result) {
+          console.log("hi");
+        });
+      });
+
+      Swal.fire(
+        "Información",
+        "Venta registrada satisfactoriamente",
+        "success"
+      );
+
+      limpiarStorage();
+    }
+
+    function limpiarStorage() {
+      localStorage.clear()
+      location.reload();
+    }
+
+    $("#btn_reset_factura").click(function () {
+      Swal.fire({
+        title: 'Estas seguro de limpiar productos de la factura actual',
+        text: "Debera iniciar nuevamente",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Limpiar!',
+        cancelButtonText: 'No, cancelar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          limpiarStorage();
+        }
+    })
+
+
+    })
+   
+
+    $("#btn_facturar").click(function () {
+
+      let productos_facturados = JSON.parse(localStorage.getItem("Productos"));
+
+
+      productos_facturados.map(producto =>{
+        let data = {
+          numero_venta:producto.nro_venta,
+          fecha: producto.fecha,
+          producto:producto.descripcion,
+          codigo_producto:producto.codigo_producto,
+          nombre_cliente:producto.nombre_cliente,
+          documento_cliente: producto.documento_cliente,
+          costo: producto.costo,
+          precio_venta: producto.precio,
+          cantidad: producto.cantidad,
+          utilidad: parseInt( producto.cantidad) *  parseInt( producto.precio) - parseInt( producto.cantidad) *  parseInt( producto.costo) 
+      };
+     //  console.log(data);
+      $.ajax({
+        method: "POST",
+        url: "/historico_ventas",
+        data: data,
+      }).done(function (result) {
+        console.log(result);
+        restarInventario();
+      });
+     
+     }) 
+
+     let totales = JSON.parse(localStorage.getItem("Totales"));
+
+
+    //  console.log(totales);
+
+      $.ajax({
+        method: "POST",
+        url: "/resumen",
+        data: totales,
+      }).done(function (result) {
+        console.log(result);
+      });
+
+
+    });
+
+    $("#btn_descuento_25").click(function () {
+     let descuento= parseInt($("#precio_venta").val()) * 0.25
+     let precio_con_descuento  = parseInt($("#precio_venta").val()) - descuento
+     $("#precio_venta").val(precio_con_descuento)
+    })
+
+    $("#btn_descuento_15").click(function () {
+     let descuento= parseInt($("#precio_venta").val()) * 0.15
+     let precio_con_descuento  = parseInt($("#precio_venta").val()) - descuento
+     $("#precio_venta").val(precio_con_descuento)
+    })
+ 
+    function limpiarSelecion() {
+      $("#descripcion_producto").val("Seleccione");  
+      $("#precio_venta").val(""); 
+      $("#cantidad_producto").val(""); 
+    }
+
+    $("#btn_registrar_producto").click(function () {
+
+      if( $("#descripcion_producto").val() == "Seleccione" || $("#precio_venta").val() == "" || $("#cantidad_producto").val()== ""){
+
+        Swal.fire(
+                    'Información',
+                    'Descripción, precio venta y cantidad son obligatorios',
+                    'warning'
+                )  
+
+      }else {
+
+        let producto_registrado = {
+        nro_venta: $("#nro_venta").text(),
+        fecha: $("#fecha_factura").text(),
+        nombre_cliente: $("#nombre_cliente_factura").text(),
+        documento_cliente: $("#documento_cliente_factura").text(),     
+        id_producto: $("#id_producto").val(),
+        codigo_producto: $("#codigo_producto").val(),
+        descripcion: $("#descripcion_producto").val(),
+        costo: $("#costo_producto").val(),
+        precio: $("#precio_venta").val(),     
+        cantidad: $("#cantidad_producto").val(),
+      };
+
+
+      producto_registrado.utilidad =(parseInt(producto_registrado.precio) *parseInt(producto_registrado.cantidad))-(parseInt(producto_registrado.costo) * parseInt(producto_registrado.cantidad));
+
+      producto_registrado.subtotal =
+        parseInt(producto_registrado.precio) *
+        parseInt(producto_registrado.cantidad);
+
+      let productos_registrados = [];
+
+      if (!localStorage.getItem("Productos")) {
+        productos_registrados.push(producto_registrado);
+        localStorage.setItem(
+          "Productos",
+          JSON.stringify(productos_registrados)
+        );
+      } else {
+        productos_registrados = JSON.parse(localStorage.getItem("Productos"));
+        productos_registrados.push(producto_registrado);
+        localStorage.setItem(
+          "Productos",
+          JSON.stringify(productos_registrados)
+        );
+      }
+      CreateTableVenta();
+      limpiarSelecion();
+      }
+
+
+    });
+
+    $(document).ready(function () {
+      ConsultaClientes();
+      consultaProductos();
+      ConsultaNroVenta();
+
+      let productos_registrados =localStorage.getItem("Productos");
+        if (productos_registrados){
+          CreateTableVenta();          
+        }
+    
+
+      let documento =localStorage.getItem("Documento");
+        if(documento){         
+          let re = /"/gi;
+          let new_documento  =documento.replace(re, "");
+          $('#documento_cliente_factura').text(new_documento)
+        }
+
+      let cliente =localStorage.getItem("Cliente");
+        if(cliente){
+          let re = /"/gi;
+          let new_cliente  =cliente.replace(re, "");
+          $('#nombre_cliente_factura').text(new_cliente)
+        }
+
+      let fecha =localStorage.getItem("Fecha");
+        if(fecha){
+          let re = /"/gi;
+          let new_fecha  =fecha.replace(re, "");
+          $('#fecha_factura').text(new_fecha)
+        }
+
+      let telefono =localStorage.getItem("Telefono");
+       if(telefono){
+          let re = /"/gi;
+          let new_telefono =telefono.replace(re, "");
+          $('#telefono_cliente_factura').text(new_telefono)
+        }
+
+      let direccion =localStorage.getItem("Direccion");
+      if(direccion){
+          let re = /"/gi;
+          let new_direccion =direccion.replace(re, "");
+          $('#direccion_cliente_factura').text(new_direccion)
+        }
+
+    });
+
+    function CreateTableVenta() {
+      var base_url = window.location.origin;
+      if ($.fn.dataTable.isDataTable("#table-venta")) {
+        table = $("#table-venta").DataTable();
+        table.destroy();
+      }
+      let data_productos = JSON.parse(localStorage.getItem("Productos"));
+
+
+      var table = $("#table-venta").DataTable({
+        data: data_productos,
+        columns: [
+          { data: "codigo_producto", title: "Código", width: "80px" },
+          { data: "descripcion", title: "Descripción", width: "80px" },
+          { data: "precio", title: "Precio Uni", width: "80px" },
+          { data: "cantidad", title: "Cantidad", width: "80px" },
+          { data: "subtotal", title: "Subtotal", width: "80px" },
+          { data: "utilidad", title: "Utilidad", width: "80px" },
+        ],
+        language: {
+        url: "/vendor/data-tables/Spanish.json",
+      },
+      select: false,
+      responsive: false,
+      pageLength: 50,
+      dom: "tB",
+      "footerCallback": function ( row, data, start, end, display ) {
+          var api = this.api(), data;
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function ( i ) {
+              return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                      i : 0;
+          };
+
+
+          // Total over all pages
+          total = api.column( 3 ).data().reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                   }, 0 );
+
+          // Update footer
+          $( api.column(3 ).footer() ).html(total);
+
+
+          // Total over all pages
+          total = api.column(4).data().reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                   }, 0 );
+          // Update footer
+          $( api.column(4).footer() ).html(' Total $'+ new Intl.NumberFormat().format(total));
+
+                   // Total over all pages
+                   total = api.column(5).data().reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                   }, 0 );
+          // Update footer
+          $( api.column(5).footer() ).html(' Total $'+ new Intl.NumberFormat().format(total));
+      },            
+      'columnDefs': [
+        {
+            "render": function (data, type, row) {
+            
+                return '$' + new Intl.NumberFormat().format(data)
+            },
+            "targets": [4,5]
+        }
+      ],
+      "initComplete": function(settings, json) {
+        setTimeout(() => {
+        let  mes= $("#fecha_factura").text().split('/')[0]
+        let año= $("#fecha_factura").text().split('/')[2]
+
+        let totales = {
+        nro_venta: $("#nro_venta").text(),
+        cantidades: $("#cantidades").text(),
+        cliente: $("#nombre_cliente_factura").text(),
+        fecha :mes +'/'+ año,
+        total_pago: $("#total").text().trim().split('$')[1].replace('.', ''),
+        utilidad: $("#utilidad").text().trim().split('$')[1].replace('.', ''),
+
+      }
+      localStorage.setItem(
+          "Totales",
+          JSON.stringify(totales)
+        );
+          
+        }, 500);
+
+  }
+
+
+      });
+
+      setTimeout(function () {
+        $(".buttons-copy").addClass("d-none");
+        $(".buttons-csv").addClass("d-none");
+    }, 200);
+    }
+
+    $("#logout").on("click", function () {
+      limpiarStorage();
+       $.ajax({
+        method: "POST",
+        url: "auth/logout",
+      }).done(function (result) {    
+        setTimeout(() => {
+      location.reload();
+     }, 200);        
+     })
+
+});
+  </script>
+</html>
+
+
