@@ -18,10 +18,10 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.listen(3000, ()=>{
-    console.log('Server on port 3000');
-})
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server on port ${PORT}`)
+});
 
 app.use('/', require ('./routes/index'));
 app.use('/producto', require ('./routes/producto'));
